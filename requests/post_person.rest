@@ -1,0 +1,35 @@
+GET http://localhost:3001/api/persons/
+
+### Post person
+POST http://localhost:3001/api/persons/
+content-type: application/json
+
+{
+    "name": "Test",
+    "number": "123-45678"
+}
+
+### No name
+POST http://localhost:3001/api/persons/
+content-type: application/json
+
+{
+    "number": "123-45678"
+}
+
+### No number
+POST http://localhost:3001/api/persons/
+content-type: application/json
+
+{
+    "name": "Test"
+}
+
+### Name not unique
+POST http://localhost:3001/api/persons/
+content-type: application/json
+
+{
+    "name": "Arto Hellas",
+    "number": "045-123456"
+}

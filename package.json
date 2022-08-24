@@ -1,0 +1,26 @@
+{
+  "name": "phonebook-backend",
+  "version": "1.0.0",
+  "description": "backend app for phonebook entries",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "backend",
+    "phonebook",
+    "fulstackopen",
+    "course"
+  ],
+  "author": "pukinuki",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.1",
+    "morgan": "^1.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.19"
+  }
+}
