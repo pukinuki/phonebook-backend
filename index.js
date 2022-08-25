@@ -4,31 +4,6 @@ const morgan = require('morgan')
 const cors = require('cors')
 const Person = require('./models/person')
 
-/*let persons = [
-    {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-      },
-      {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-      }
-]*/
-
-//const generateRandomID = () => Math.floor(Math.random()*10000)
-
 const app = express()
 
 app.use(express.json())
@@ -106,8 +81,9 @@ app.post('/api/persons', (request, response, next) => {
   Person
     .find({name: body.name}).then(result => {
       if (result.length!==0) {
-        return response.status(400).json({ 
-          error: 'name must be unique' 
+        return response.status(409).json({ 
+          error: `person ${body.name} is already in the database`,
+          person: result[0] 
         })
       }
       else {
@@ -153,7 +129,7 @@ app.put('/api/persons/:id', (request, response, next) => {
     })
   }
 
-  Person.findByIdAndUpdate(request.params.id, person)
+  Person.findByIdAndUpdate(request.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       updatedPerson.number = person.number
       response.json(updatedPerson)
@@ -168,10 +144,12 @@ const unknownEndpoint = (request, response) => {
 app.use(unknownEndpoint)
 
 const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+  console.error(error.name,error.message)
 
   if (error.name === 'CastError') {
     return response.status(400).send({ error: 'malformatted id' })
+  }else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
 
   next(error)
