@@ -1,29 +1,28 @@
-const http = require('http')
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
 
 let persons = [
-    {
-        "name": "Arto Hellas",
-        "number": "040-123456",
-        "id": 1
-      },
-      {
-        "name": "Ada Lovelace",
-        "number": "39-44-5323523",
-        "id": 2
-      },
-      {
-        "name": "Dan Abramov",
-        "number": "12-43-234345",
-        "id": 3
-      },
-      {
-        "name": "Mary Poppendieck",
-        "number": "39-23-6423122",
-        "id": 4
-      }
+  {
+    'name': 'Arto Hellas',
+    'number': '040-123456',
+    'id': 1
+  },
+  {
+    'name': 'Ada Lovelace',
+    'number': '39-44-5323523',
+    'id': 2
+  },
+  {
+    'name': 'Dan Abramov',
+    'number': '12-43-234345',
+    'id': 3
+  },
+  {
+    'name': 'Mary Poppendieck',
+    'number': '39-23-6423122',
+    'id': 4
+  }
 ]
 
 const generateRandomID = () => Math.floor(Math.random()*10000)
@@ -36,7 +35,7 @@ app.use(express.static('build'))
 app.use(morgan('tiny'))
 
 app.get('/api/persons', (request, response) => {
-    response.json(persons)
+  response.json(persons)
 })
 
 app.get('/api/persons/:id', (request, response) => {
@@ -49,11 +48,11 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.get('/info', (request, response) => {
-    response.send(
-        `<p>Phonebook has info for ${persons.length} people</p>
+  response.send(
+    `<p>Phonebook has info for ${persons.length} people</p>
         <p>${new Date().toString()}</p>`
 
-    )
+  )
 })
 
 app.delete('/api/persons/:id', (request,response) => {
@@ -72,24 +71,23 @@ morgan.token('jsonBody', (req) => {
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :jsonBody'))
 
 app.post('/api/persons', (request, response) => {
-  
   const body = request.body
 
   if (!body.name) {
-    return response.status(400).json({ 
-      error: 'name missing' 
+    return response.status(400).json( {
+      error: 'name missing'
     })
   }
 
   if (!body.number) {
-    return response.status(400).json({ 
-      error: 'number missing' 
+    return response.status(400).json({
+      error: 'number missing'
     })
   }
 
-  if (persons.find(p=>p.name === body.name)) {
-    return response.status(400).json({ 
-      error: 'name must be unique' 
+  if (persons.find(p => p.name === body.name)) {
+    return response.status(400).json({
+      error: 'name must be unique'
     })
   }
 
@@ -104,6 +102,7 @@ app.post('/api/persons', (request, response) => {
   response.json(person)
 })
 
+// eslint-disable-next-line no-undef
 const PORT = process.env.PORT || 3001
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
